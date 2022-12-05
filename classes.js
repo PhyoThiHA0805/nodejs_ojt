@@ -172,3 +172,23 @@ let bingo = new Dog(4);
 bingo.walk();
 // walking on 4 legs
 // go walking
+
+
+// new Target
+
+class Person4 {
+    constructor(name) {
+        this.name = name;
+        console.log(new.target.name);
+    }
+}
+
+class Employee extends Person4 {
+    constructor(name, title) {
+        super(name);
+        this.title = title;
+    }
+}
+
+let john = new Person4('John Doe'); // Person4
+let lily = new Employee('Lily Bush', 'Programmer'); // Employee
