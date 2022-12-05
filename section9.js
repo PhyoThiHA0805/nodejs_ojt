@@ -39,3 +39,16 @@ userRoles.delete(john);
 userRoles.clear();
 console.log('After delete', userRoles);
 
+
+// Set
+let chars = ['a', 'a', 'b', 'c', 'c'];
+// chars.add('a');
+console.log('Chars: ', chars);
+
+// let exist = chars.has('a');
+// console.log(exist)
+
+chars = new Set(chars.map(char =>{
+    return char.toUpperCase();
+} ));
+console.log(chars);
