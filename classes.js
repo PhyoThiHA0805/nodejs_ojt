@@ -58,3 +58,23 @@ class Person1 {
 
 let anonymous = Person1.createAnonymous("male");
 console.log('Name',anonymous.name);
+
+
+// Static Properties
+class Item {
+    constructor(name, quantity) {
+      this.name = name;
+      this.quantity = quantity;
+    //   Item.count++;
+    this.constructor.count++;
+    }
+    static count = 0;
+    static getCount() {
+      return Item.count;
+    }
+  }
+  
+  let pen = new Item('Pen', 5);
+  let notebook = new Item('notebook', 10);
+  
+  console.log(Item.getCount());
