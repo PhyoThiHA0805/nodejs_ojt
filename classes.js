@@ -78,3 +78,20 @@ class Item {
   let notebook = new Item('notebook', 10);
   
   console.log(Item.getCount());
+
+
+// Computed Property
+let name = 'fullName';
+  class Person2 {
+    constructor(firstName, lastName) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+    }
+    get [name]() {
+      return `${this.firstName} ${this.lastName}`;
+    }
+
+  }
+  
+  let person2 = new Person2('John', 'Doe');
+  console.log(person2.fullName);
