@@ -55,3 +55,31 @@ let even = {
 };
 let evenNumbers = Array.from(even);
 console.log(evenNumbers);
+
+
+// Array.find()
+let customers = [{
+    name: 'ABC Inc',
+    credit: 100
+}, {
+    name: 'ACME Corp',
+    credit: 200
+}, {
+    name: 'IoT AG',
+    credit: 300
+}];
+
+console.log(customers.find(c => c.credit > 100));
+
+let newArr = [];
+
+customers.map(customer => {
+    
+    if(customer.credit > 100) newArr.push(customer);
+    
+    // console.log(newArr)
+    // return newArr;
+}); 
+
+console.log(newArr);
+
