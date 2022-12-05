@@ -145,7 +145,8 @@ const p1 = new Promise((resolve, reject) => {
 const p2 = new Promise((resolve, reject) => {
   setTimeout(() => {
     console.log('The second promise has rejected');
-    reject(new Error('Failed'));
+    // reject(new Error('Failed'));
+    resolve(20);
   }, 2 * 1000);
 });
 const p3 = new Promise((resolve, reject) => {
@@ -155,9 +156,13 @@ const p3 = new Promise((resolve, reject) => {
   }, 3 * 1000);
 });
 
-Promise.all([p1, p2, p3]).then((results) => {
-  const total = results.reduce((p, c) => p + c);
+// Promise.all([p1, p2, p3]).then((results) => {
+//   const total = results.reduce((p, c) => p + c);
 
-  console.log(`Results: ${results}`);
-  console.log(`Total: ${total}`);
-}).catch(err => console.log(err.message));
+//   console.log(`Results: ${results}`);
+//   console.log(`Total: ${total}`);
+// }).catch(err => console.log(err.message));
+
+Promise.race([p1, p2, p3])
+    .then(value => console.log(`Resolved: ${value}`))
+    .catch(reason => console.log(`Rejected: ${reason}`));
