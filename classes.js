@@ -40,3 +40,21 @@ meeting.add('John').add('Jane').add('Peter');
 
 if (meeting.attendees.length == 0 ) console.log(meeting.latest);
 else console.log(`The latest attendee is ${meeting.latest}.`); 
+
+
+// Static Method
+class Person1 {
+	constructor(name) {
+		this.name = name;
+	}
+	getName() {
+		return this.name;
+	}
+	static createAnonymous(gender) {
+		let name = gender == "male" ? "John Doe" : "Jane Doe";
+		return new Person1(name);
+	}
+}
+
+let anonymous = Person1.createAnonymous("male");
+console.log('Name',anonymous.name);
