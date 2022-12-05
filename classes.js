@@ -95,3 +95,80 @@ let name = 'fullName';
   
   let person2 = new Person2('John', 'Doe');
   console.log(person2.fullName);
+
+
+// Inheritance
+
+// class Animal {
+//     constructor(legs) {
+//         this.legs = legs;
+//     }
+//     walk() {
+//         console.log('walking on ' + this.legs + ' legs');
+//     }
+// }
+
+// class Bird extends Animal {
+//     constructor(legs) {
+//         super(legs);
+        
+//     }
+//     fly() {
+//         console.log('flying');
+//     }
+// }
+
+
+// let bird = new Bird(2);
+
+// bird.walk();
+// bird.fly();
+
+// class Bird extends Animal {
+// 	constructor(legs, color) {
+// 		super(legs);
+// 		this.color = color;
+// 	}
+// 	fly() {
+// 		console.log("flying");
+// 	}
+// 	getColor() {
+// 		return this.color;
+// 	}
+// }
+
+// let pegion = new Bird(2, "white");
+// console.log(pegion.getColor());
+
+class Animal {
+    constructor(legs) {
+        this.legs = legs;
+    }
+    walk() {
+        console.log('walking on ' + this.legs + ' legs');
+    }
+    static helloWorld() {
+        console.log('Hello World');
+    }
+}
+
+class Bird extends Animal {
+    fly() {
+        console.log('flying');
+    }
+}
+
+class Dog extends Animal {
+    constructor(leg) {
+        super(leg);
+    }
+    walk() {
+        super.walk();
+        console.log(`go walking`);
+    }
+}
+
+let bingo = new Dog(4);
+bingo.walk();
+// walking on 4 legs
+// go walking
