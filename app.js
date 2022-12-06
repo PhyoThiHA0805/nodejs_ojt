@@ -1,4 +1,6 @@
 var http = require("http");
+const express = require("express");
+
 http.createServer( (request, response) => {
   
     response.writeHead(200, {'Content-Type': 'text/plain'});
@@ -22,3 +24,20 @@ http.createServer( (request, response) => {
     }
  }).listen(4000);
  console.log('Server running on port 4000');
+
+
+// Callback Concepts
+
+// Synchronous Method
+const fs = require("fs");
+const data = fs.readFileSync('input.txt');
+
+console.log(data.toString());
+console.log('Program End');
+
+// Asynchronous Method
+fs.readFile('input.txt', (err,data) => {
+    if (err) return console.log('Error', err.message);
+
+    console.log('Data: ',data.toString());
+})
