@@ -26,7 +26,7 @@ http
   .listen(4000);
 console.log("Server running on port 4000");
 
-// Callback Concepts
+//// Callback Concepts
 
 // Synchronous Method
 const fs = require("fs");
@@ -42,7 +42,7 @@ fs.readFile("input.txt", (err, data) => {
   console.log("Data: ", data.toString());
 });
 
-// Event Loop
+//// Event Loop
 const EventEmitter = require("events");
 const emitter = new EventEmitter();
 
@@ -65,3 +65,48 @@ emitter.on("data_received", (data) =>
 // Raise an Event
 emitter.emit("connection");
 console.log("Event is raised");
+
+//// Streams
+let data1 = "";
+
+// Create a readable stream
+const readerStream = fs.createReadStream("input.txt");
+
+// Set the encoding to be utf8.
+readerStream.setEncoding("UTF8");
+readerStream.on("data", (chunk) => {
+  (data1 += chunk), console.log("Chunks : ", chunk);
+});
+readerStream.on("end", () => console.log("Data from streams : ", data1));
+readerStream.on("error", (err) => console.log(err.stack));
+
+// Create a writable stream
+const writerStream = fs.createWriteStream("output.txt");
+
+// Write the data to stream with encoding to be utf8
+writerStream.write(data, "UTF8");
+
+// Mark the end of file
+writerStream.end(); // When throw error, comment this line
+
+// Handle stream events --> finish, and error
+writerStream.on("finish", function () {
+  console.log("Write completed.");
+});
+
+writerStream.on("error", function (err) {
+  console.log(err.stack);
+});
+
+//// Piping Stream
+readerStream.pipe(writerStream);
+
+//// Chaining Stream
+const zlib = require('zlib');
+
+// Compress the file input.txt to input.txt.gz
+fs.createReadStream('input.txt')
+   .pipe(zlib.createGzip())
+   .pipe(fs.createWriteStream('input.txt.gz'));
+  
+console.log("File Compressed.")
