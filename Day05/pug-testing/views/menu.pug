@@ -1,0 +1,93 @@
+extends layout.pug
+block content
+    nav
+        ul
+            li
+                a(href="/") Home
+            li
+                a(href="/about") About
+
+    - const random = Math.floor(Math.random() * 10)
+    .number= `Random number is ${random}`
+
+    - const balance = 100
+    if balance >= 50
+        span Nice!
+    else if balance >= 0
+        span Cool
+    else
+        span Uh oh!
+
+    ul.week
+    each day in ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+        li.week__day= day.toUpperCase()
+
+    - let b = 0
+    while b < 5
+        .balloon Ballon #{b + 1}
+        - b++
+
+    mixin socials
+        li
+            a(href='https://dev.to/jh3y') Check out some articles!
+        li
+            a(href='https://codepen.io/jh3y') Check out some code!
+
+    mixin card(name, avatar = 'https://placehold.it/400x400')
+        .card
+            img.card__image(src= avatar)
+            h2.card__title= name
+
+    mixin card(name, avatar = 'https://placehold.it/400x400')
+        .card
+            img.card__image(src= avatar)
+            h2.card__title= name
+            if block
+                block
+
+    +card('Stu', 'https://stu.com/avatar.png')
+       .card__badge User of the month!
+
+    +card('Geoff', 'https://some-image.com/geoff.png')
+    +card('Jack')
+
+    footer
+        ul
+            +socials
+
+
+    .flower
+        .flower__petal.flower__petal--0
+            div
+            div
+            div
+            div
+        .flower__petal.flower__petal--1
+            div
+            div
+            div
+            div
+        .flower__petal.flower__petal--2
+            div
+            div
+            div
+            div
+        .flower__petal.flower__petal--3
+            div
+            div
+            div
+            div    
+        .flower__core
+
+    mixin flower
+        .flower
+            - let p = 0
+            while (p < 4)
+            .flower__petal(class=`flower__petal--${p}`)
+                - let s = 0
+                while (s < 4)
+                div
+                - s++
+            - p++
+            .flower__core
+    +flower
