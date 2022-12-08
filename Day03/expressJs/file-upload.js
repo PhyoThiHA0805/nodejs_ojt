@@ -25,7 +25,11 @@ app.post("/file_upload", upload, (req, res) => {
     console.log("File Path: ", file.path);
     console.log(file.mimetype);
 
-    const fileLocation = __dirname + "/images/" + file.filename;
+    // Adding file to filetype
+    filetype = file.mimetype.split("/");
+    const fileLocation =
+      __dirname + "/images/" + file.filename + "." + filetype[1];
+
     console.log("FileLocation: " + fileLocation);
     fs.readFile(file.path, (err, data) => {
       //   console.log("File Data: " + JSON.stringify(data));
@@ -53,8 +57,8 @@ app.post("/file_upload", upload, (req, res) => {
 });
 
 // Cookies
-app.get('/', (req, res)=> {
+app.get("/", (req, res) => {
   console.log("Cookies : ", req.cookies);
   res.send(req.cookies);
-})
+});
 app.listen(3000, () => console.log("Server is listening on port 3000"));

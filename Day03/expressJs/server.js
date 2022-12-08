@@ -11,7 +11,7 @@ app.use(express.static("public"));
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(multer({ dest: '/tmp/' }));
+// app.use(multer({ dest: '/tmp/' }).single(''));
 
 app.get("/api", (req, res) => {
   res.send("Hello, Welcome to my Website");
