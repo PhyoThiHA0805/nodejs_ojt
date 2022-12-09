@@ -84,9 +84,21 @@ con.connect((err) => {
     );
 
     // Get Specific Value from Table
-    con.query("SELECT * FROM customers WHERE address = 'Park Lane 38'", function (err, result) {
+    con.query(
+      "SELECT * FROM customers WHERE address = 'Park Lane 38'",
+      function (err, result) {
         if (err) throw err;
         console.log(result);
-      });
+      }
+    );
+
+    // WildCard Character
+    con.query(
+      "SELECT * FROM customers WHERE address LIKE 'S%'",
+      (err, result) => {
+        if (err) throw err;
+        console.log(result);
+      }
+    );
   });
 });
