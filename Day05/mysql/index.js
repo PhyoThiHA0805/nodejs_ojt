@@ -73,5 +73,11 @@ con.connect((err) => {
       //console.log("Result: " + JSON.stringify(result.map(function(row) { return row; })));
         console.log(fields[1].name);
     });
+    
+    // Selecting Columns
+    con.query("SELECT name, address FROM customers", function (err, result, fields) {
+        if (err) throw err;
+        console.log(result);
+      });
   });
 });
