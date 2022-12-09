@@ -145,5 +145,12 @@ con.connect((err) => {
       if (err) throw err;
       console.log("Number of record deleted: ", result.affectedRows);
     });
+
+    // DELETE Table
+    const dropTable = "DROP TABLE customers";
+    con.query(dropTable, (err, result) => {
+      if (err) throw err;
+      console.log("Table Deleted");
+    });
   });
 });
