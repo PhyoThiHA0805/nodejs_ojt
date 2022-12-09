@@ -26,5 +26,12 @@ con.connect((err) => {
       if (err) throw err;
       console.log("Table created successfully");
     });
+
+    // Add Column to existing Table
+      const addColumn = "ALTER TABLE customers ADD COLUMN phone VARCHAR(255)"
+      con.query(addColumn, (err) => {
+          if (err) throw err;
+          console.log("Column added successfully");
+      })
   });
 });
