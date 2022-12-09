@@ -185,5 +185,32 @@ con.connect((err) => {
 
       console.log("Limited Customers List from Offset", result);
     });
+
+    // JOIN Table
+    const join =
+      "SELECT users.name AS users, products.name AS favorite FROM users JOIN products ON users.favorite_product = products.name";
+    con.query(join, (err, result) => {
+      if (err) throw err;
+
+      console.log("Joined data", result);
+    });
+
+    // Left Join
+    const leftJoin =
+      "SELECT users.name AS users,products.name AS favorite FROM users LEFT JOIN products ON users.favorite_product = products.name";
+    con.query(leftJoin, (err, result) => {
+      if (err) throw err;
+
+      console.log("Joined data", result);
+    });
+
+    // Right Join
+    const rightJoin =
+      "SELECT users.name AS user, products.name AS favorite FROM users RIGHT JOIN products ON users.favorite_product = products.id";
+    con.query(rightJoin, (err, result) => {
+      if (err) throw err;
+
+      console.log("Joined data", result);
+    });
   });
 });
