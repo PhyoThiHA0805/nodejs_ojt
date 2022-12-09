@@ -153,4 +153,12 @@ con.connect((err) => {
       console.log("Table Deleted");
     });
   });
+
+  // DELETE Table if exit
+  const dropTable2 = "DROP TABLE IF EXISTS customers";
+  con.query(dropTable2, (err, result) => {
+    if (err) throw err;
+
+    console.log(result);
+  });
 });
