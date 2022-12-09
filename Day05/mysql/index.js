@@ -140,25 +140,34 @@ con.connect((err) => {
     });
 
     // DELETE Record
-    const deleteData = "DELETE FROM customers WHERE address = 'Mountain 21'";
-    con.query(deleteData, (err, result) => {
-      if (err) throw err;
-      console.log("Number of record deleted: ", result.affectedRows);
-    });
+    // const deleteData = "DELETE FROM customers WHERE address = 'Mountain 21'";
+    // con.query(deleteData, (err, result) => {
+    //   if (err) throw err;
+    //   console.log("Number of record deleted: ", result.affectedRows);
+    // });
 
     // DELETE Table
-    const dropTable = "DROP TABLE customers";
-    con.query(dropTable, (err, result) => {
-      if (err) throw err;
-      console.log("Table Deleted");
+    // const dropTable = "DROP TABLE customers";
+    // con.query(dropTable, (err, result) => {
+    //   if (err) throw err;
+    //   console.log("Table Deleted");
+    // });
+
+    // DELETE Table if exit
+    // const dropTable2 = "DROP TABLE IF EXISTS customers";
+    // con.query(dropTable2, (err, result) => {
+    //   if (err) throw err;
+
+    //   console.log(result);
+    // });
+
+    // UPDATE Table
+    const update =
+      "UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'";
+    con.query(update, (err, result) => {
+      if (err) throw err.message;
+
+      console.log(result.affectedRows + " record(s) updated");
     });
-  });
-
-  // DELETE Table if exit
-  const dropTable2 = "DROP TABLE IF EXISTS customers";
-  con.query(dropTable2, (err, result) => {
-    if (err) throw err;
-
-    console.log(result);
   });
 });
