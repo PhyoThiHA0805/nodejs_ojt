@@ -169,5 +169,21 @@ con.connect((err) => {
 
       console.log(result.affectedRows + " record(s) updated");
     });
+
+    // LIMIT the Result
+    const limit = "SELECT * FROM customers LIMIT 5";
+    con.query(limit, (err, result) => {
+      if (err) throw err;
+
+      console.log('Limitted customers list',result);
+    });
+      
+    // Start From Another Position
+      const limitFromAnother = "SELECT * FROM customers LIMIT 5 OFFSET 2";
+      con.query(limitFromAnother, (err, result) => {
+          if (err) throw err;
+
+          console.log('Limited Customers List from Offset', result);
+      })
   });
 });
