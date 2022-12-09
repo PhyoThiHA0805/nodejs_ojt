@@ -175,15 +175,15 @@ con.connect((err) => {
     con.query(limit, (err, result) => {
       if (err) throw err;
 
-      console.log('Limitted customers list',result);
+      console.log("Limitted customers list", result);
     });
-      
-    // Start From Another Position
-      const limitFromAnother = "SELECT * FROM customers LIMIT 5 OFFSET 2";
-      con.query(limitFromAnother, (err, result) => {
-          if (err) throw err;
 
-          console.log('Limited Customers List from Offset', result);
-      })
+    // Start From Another Position
+    const limitFromAnother = "SELECT * FROM customers LIMIT 5 OFFSET 2";
+    con.query(limitFromAnother, (err, result) => {
+      if (err) throw err;
+
+      console.log("Limited Customers List from Offset", result);
+    });
   });
 });
