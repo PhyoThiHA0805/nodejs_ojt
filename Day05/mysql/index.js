@@ -64,5 +64,14 @@ con.connect((err) => {
     con.query(addMultiValues, [values], (err, result) => {
       console.log("Number of records inserted: " + result.affectedRows);
     });
+
+    // SELECT * FROM Table
+    con.query("SELECT * FROM customers", (err, result, fields) => {
+      if (err) throw err;
+
+      console.log(result);
+      //console.log("Result: " + JSON.stringify(result.map(function(row) { return row; })));
+        console.log(fields[1].name);
+    });
   });
 });
