@@ -118,14 +118,25 @@ con.connect((err) => {
 
       console.log(result);
     });
-    
-    const name = 'Amy';
-    const adr = 'Mountain 21';
-    const getAddr3 = 'SELECT * FROM customers WHERE name = ? OR address = ?';
+
+    const name = "Amy";
+    const adr = "Mountain 21";
+    const getAddr3 = "SELECT * FROM customers WHERE name = ? OR address = ?";
     con.query(getAddr3, [name, adr], function (err, result) {
       if (err) throw err;
       console.log(result);
     });
-    
+
+    // Order By
+    con.query("SELECT * FROM customers ORDER BY name", (err, result) => {
+      if (err) throw err;
+      console.log(result);
+    });
+      
+    // Order By Descending
+    con.query("SELECT * FROM customers ORDER BY name DESC", (err, result) => {
+      if (err) throw err;
+      console.log(result);
+    });
   });
 });
