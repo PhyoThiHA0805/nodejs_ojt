@@ -132,11 +132,18 @@ con.connect((err) => {
       if (err) throw err;
       console.log(result);
     });
-      
+
     // Order By Descending
     con.query("SELECT * FROM customers ORDER BY name DESC", (err, result) => {
       if (err) throw err;
       console.log(result);
+    });
+
+    // DELETE Record
+    const deleteData = "DELETE FROM customers WHERE address = 'Mountain 21'";
+    con.query(deleteData, (err, result) => {
+      if (err) throw err;
+      console.log("Number of record deleted: ", result.affectedRows);
     });
   });
 });
