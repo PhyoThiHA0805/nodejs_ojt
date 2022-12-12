@@ -1,0 +1,30 @@
+//- html
+//-    head
+//-       title Signup
+//-    body
+
+//-       h4 #{message}
+//-       form(action = "/signup" method = "POST")
+//-       input(name = "id" type = "text" required placeholder = "User ID")
+//-       input(name = "password" type = "password" required placeholder = "Password")
+//-       input(type = "submit") Sign me up!
+
+doctype html
+html
+  head
+    title Sign Up
+  body
+    h1 Sign Up
+    
+    h4 #{message}
+    form(action='/signup', method='post')
+      label(for='id') UserID:
+      input#name(type='text', name='id')
+      br
+      label(for='password') Password:
+      input#email(type='pasword', name='password')
+      br
+      input(type='submit', value='Sign Up')
+      
+    //- form(action='/signup', method='delete')
+    //-   input(type='submit', value='delete')
