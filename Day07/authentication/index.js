@@ -58,9 +58,16 @@ con.connect((err) => {
       res.send("Invalid details!");
     } else {
       // Check if user already exists in the database
-      const checkUserQuery = `SELECT * FROM users WHERE id = ${req.body.id}`;
-      con.query(checkUserQuery, (err, result) => {
-        if (err) return console.log("Error checking if user exists", err), res.send(err.message);
+
+      const id = !isNaN(req.body.id) ? req.body.id : `'${req.body.id}'`;
+      // res.send(id);
+      const checkUserQuery = `SELECT * FROM users WHERE id = ${id}`;
+      con.query(checkUserQuery, [id], (err, result) => {
+        if (err)
+          return (
+            console.log("Error checking if user exists", err),
+            res.send(err.message)
+          );
 
         if (result.length > 0) {
           // User already exists
@@ -70,7 +77,7 @@ con.connect((err) => {
         } else {
           // User does not exist, add them to the database
           const newUser = { id: req.body.id, password: req.body.password };
-          const addUserQuery = `INSERT INTO users (id, password) VALUES (${req.body.id}, ${req.body.password})`;
+          const addUserQuery = `INSERT INTO users (id, password) VALUES (${id}, '${req.body.password}')`;
 
           con.query(addUserQuery, (err) => {
             if (err) return console.log("Error when creating new User", err);
