@@ -1,0 +1,23 @@
+html
+    title= "Sign Up" 
+    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css")
+body 
+    div.container
+        h1 Sign Up
+        if(message)
+            div.alert.alert-success #{message}
+        form(method="post" action="/users/signup" enctype="multipart/form-data")
+            
+            .form-group
+            label(for="username") Image
+            input#image.form-control(type="file" name="image" accept=".png,.jpg,.jpeg")
+            
+            .form-group
+            label(for="username") Username
+            input#username.form-control(type="text" name="username" placeholder="Enter your username")
+            
+            .form-group
+            label(for="password") Password
+            input#password.form-control(type="password" name="password" placeholder="Enter your password")
+            
+            button.btn.btn-primary.mt-3(type="submit") Sign Up
