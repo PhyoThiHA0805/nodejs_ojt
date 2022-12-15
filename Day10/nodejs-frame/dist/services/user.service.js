@@ -17,15 +17,13 @@ function getUsersFromDb(req, res) {
 exports.getUsersFromDb = getUsersFromDb;
 // Create User
 function createUsertoDb(req, res) {
-    console.log("Files:", req.file.filename);
-    let values = [req.body.username, req.body.password];
+    const filename = req.file.filename;
+    const values = [filename, req.body.username, req.body.password];
     console.log(values);
-    db_config_1.default.query("INSERT INTO users(username, password) VALUES (?,?)", values, (err, result) => {
+    db_config_1.default.query("INSERT INTO users(image, username, password) VALUES (?,?,?)", values, (err, result) => {
         if (err)
             return res.send(`"Error when creating user" , ${err}`);
-        return res
-            .status(200)
-            .render("signup", {
+        return res.status(200).render("signup", {
             message: "User created successfully",
             user: values,
         });

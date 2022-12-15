@@ -12,21 +12,21 @@ export function getUsersFromDb(req: any, res: any) {
 
 // Create User
 export function createUsertoDb(req: any, res: any) {
-    console.log("Files:", req.file.filename);
-    let values = [req.body.username, req.body.password];
+    const filename = req.file.filename;
+
+    const values = [filename, req.body.username, req.body.password];
     console.log(values);
+
     connection.query(
-        "INSERT INTO users(username, password) VALUES (?,?)",
+        "INSERT INTO users(image, username, password) VALUES (?,?,?)",
         values,
         (err, result) => {
             if (err) return res.send(`"Error when creating user" , ${err}`);
 
-            return res
-                .status(200)
-                .render("signup", {
-                    message: "User created successfully",
-                    user: values,
-                });
+            return res.status(200).render("signup", {
+                message: "User created successfully",
+                user: values,
+            });
         }
     );
 }
