@@ -1,3 +1,4 @@
 /node_modules/
 /Day10/nodejs-frame/node_modules/
 /Day11/sequelize/node_modules/
+/Day11/sequelize/dist/
