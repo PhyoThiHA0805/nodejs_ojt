@@ -10,6 +10,7 @@ export const user = db.define(
             defaultValue: sequelize.UUIDV4,
             primaryKey: true,
         },
+        profileImage: {type: sequelize.STRING},
         username: { type: sequelize.STRING },
         password: { type: sequelize.STRING },
         token: { type: sequelize.STRING },

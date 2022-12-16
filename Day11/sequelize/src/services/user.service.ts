@@ -63,6 +63,7 @@ export async function createUser(req: any, res: any) {
         } else {
             model.user
                 .create({
+                    profileImage: req.file.filename,
                     username: req.body.username,
                     password: req.body.password,
                     token: req.body.username + req.body.password,
