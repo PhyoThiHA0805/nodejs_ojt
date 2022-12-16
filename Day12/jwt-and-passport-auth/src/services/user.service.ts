@@ -73,7 +73,7 @@ export async function createUser(req: any, res: any) {
                         message: "user successful created",
                         data: {
                             username: req.body.username,
-                            password: req.body.password,
+                            // password: req.body.password,
                             token: req.body.username + req.body.password,
                         },
                     });

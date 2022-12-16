@@ -1,7 +1,7 @@
-import { user } from "./user.model";
+import { User } from "./user.model";
 
 const model = {
-    user: user,
+    user: User,
 };
 
 export default model;
