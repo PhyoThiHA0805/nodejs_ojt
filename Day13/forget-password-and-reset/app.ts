@@ -7,7 +7,7 @@ import passport from "passport";
 import secureRoute from "./src/routes/secure.routes";
 import authRoute from "./src/routes/auth.route";
 import session from "express-session";
-
+import forgetPasswordRoute from "./src/routes/password-reset.route";
 dotenv.config();
 const app = express();
 
@@ -40,5 +40,5 @@ app.use("/", authRoute);
 app.use("/user", userRoute);
 app.use("/auth", passport.authenticate("jwt", { session: false }), secureRoute);
 require("./src/services/auth.service");
-
+app.use("/forget-password", forgetPasswordRoute);
 export default app;

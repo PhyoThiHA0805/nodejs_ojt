@@ -1,5 +1,6 @@
 import { Op } from "sequelize";
 import model from "../models/index.model";
+import { validate } from "../models/user.model";
 
 // Get All users
 export async function getUsers(req: any, res: any) {
@@ -47,6 +48,9 @@ export async function getUserByUsername(req: any, res: any) {
 // Create new User
 export async function createUser(req: any, res: any) {
     try {
+        const { error } = validate(req.body);
+        if (error) res.status(400).send(error.details[0].message);
+
         const checkData = await model.user.findAll({
             where: {
                 [Op.or]: {
@@ -66,9 +70,10 @@ export async function createUser(req: any, res: any) {
                     profileImage: req.file.filename,
                     username: req.body.username,
                     password: req.body.password,
+                    email: req.body.email,
                     token: req.body.username + req.body.password,
                 })
-                .then((result:any) => {
+                .then((result: any) => {
                     res.status(201).json({
                         message: "user successful created",
                         data: {
@@ -91,7 +96,7 @@ export async function updateUser(req: any, res: any) {
             .findAll({
                 where: { user_id: req.body.user_id },
             })
-            .then(async (result:any) => {
+            .then(async (result: any) => {
                 if (result.length > 0) {
                     const existingUser = await model.user.findOne({
                         where: { username: req.body.username },
@@ -139,7 +144,7 @@ export async function deleteUser(req: any, res: any) {
             .findAll({
                 where: { user_id: req.body.user_id },
             })
-            .then(async (result:any) => {
+            .then(async (result: any) => {
                 if (result.length > 0) {
                     await model.user.destroy({
                         where: { user_id: req.body.user_id },

@@ -1,9 +1,10 @@
 import sequelize, { DataTypes, Model } from "sequelize";
 import db from "../config/db.config";
 import bcrypt from "bcrypt";
+import Joi from "joi";
 
 export const User = db.define(
-    "user",
+    "user-forget-password",
     {
         // id: { type: sequelize.INTEGER, autoIncrement: true, primaryKey: true },
         user_id: {
@@ -13,6 +14,7 @@ export const User = db.define(
         },
         profileImage: { type: sequelize.STRING },
         username: { type: sequelize.STRING },
+        email: { type: sequelize.STRING},
         password: { type: sequelize.STRING },
         token: { type: sequelize.STRING },
     },
@@ -21,6 +23,7 @@ export const User = db.define(
         freezeTableName: true,
         // dont use createdAt/update
         timestamps: true,
+        tableName: "user-forget-password",
 
         hooks: {
             beforeCreate: async (user: any) => {
@@ -28,11 +31,22 @@ export const User = db.define(
                 console.log("salt", salt);
 
                 const hash = await bcrypt.hash(user.password, salt);
-                user.password = hash;
+                // user.password = hash;
             },
         },
     }
 );
+
+export const validate = (user: any) => {
+    const schema = Joi.object({
+        profileImage: Joi.string(),
+        username: Joi.string().required(),
+        email: Joi.string().email().required(),
+        password: Joi.string().required(),
+        token: Joi.string()
+    });
+    return schema.validate(user);
+};
 
 // User.prototype.verifyPassword = async function (password: string) {
 //     return bcrypt.compare(password, this.password);
