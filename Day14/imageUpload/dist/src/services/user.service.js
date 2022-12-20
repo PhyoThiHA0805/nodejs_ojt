@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUser = exports.createUser = exports.getUserByUsername = exports.getUsers = void 0;
+exports.getSignUpForm = exports.deleteUser = exports.updateUser = exports.createUser = exports.getUserByUsername = exports.getUsers = void 0;
 const sequelize_1 = require("sequelize");
 const index_model_1 = __importDefault(require("../models/index.model"));
 const user_model_1 = require("../models/user.model");
@@ -20,22 +20,26 @@ const user_model_1 = require("../models/user.model");
 function getUsers(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const userData = yield index_model_1.default.user.findAll();
+            let userData = yield index_model_1.default.user.findAll();
             if (userData.length > 0) {
-                res.status(200).json({
+                userData = userData.map((user) => {
+                    return user.dataValues;
+                });
+                console.log("Users: ", userData);
+                res.status(200).render("usersList", {
                     message: "Connection successful",
                     data: userData,
                 });
             }
             else {
-                res.status(200).json({
+                res.status(200).render("usersList", {
                     message: "Connection failed",
                     data: [],
                 });
             }
         }
         catch (error) {
-            res.status(404).json({ message: error });
+            res.status(404).render("usersList", { message: error });
         }
     });
 }
@@ -72,7 +76,10 @@ function createUser(req, res) {
         try {
             const { error } = (0, user_model_1.validate)(req.body);
             if (error)
-                res.status(400).send(error.details[0].message);
+                return res.status(400).render("signup", {
+                    message: error.details[0].message,
+                    success: false,
+                });
             const checkData = yield index_model_1.default.user.findAll({
                 where: {
                     [sequelize_1.Op.or]: {
@@ -82,8 +89,9 @@ function createUser(req, res) {
                 },
             });
             if (checkData.length > 0) {
-                res.status(500).json({
+                res.status(500).render("signup", {
                     message: "username/password has already in use",
+                    success: false,
                 });
             }
             else {
@@ -96,8 +104,9 @@ function createUser(req, res) {
                     token: req.body.username + req.body.password,
                 })
                     .then((result) => {
-                    res.status(201).json({
+                    res.status(201).render("signup", {
                         message: "user successful created",
+                        success: true,
                         data: {
                             username: req.body.username,
                             // password: req.body.password,
@@ -108,7 +117,7 @@ function createUser(req, res) {
             }
         }
         catch (err) {
-            res.status(404).json({ message: err });
+            res.status(404).render("signup", { message: err, success: false });
         }
     });
 }
@@ -189,3 +198,8 @@ function deleteUser(req, res) {
     });
 }
 exports.deleteUser = deleteUser;
+// Get Signup Form
+function getSignUpForm(req, res) {
+    res.render("signup");
+}
+exports.getSignUpForm = getSignUpForm;

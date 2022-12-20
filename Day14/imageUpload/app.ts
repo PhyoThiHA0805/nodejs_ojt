@@ -11,11 +11,16 @@ import forgetPasswordRoute from "./src/routes/password-reset.route";
 dotenv.config();
 const app = express();
 
+// Setting View Engine
+app.set('view engine', 'pug');
+app.set('views', 'D:/nodejs/nodejs_ojt/Day14/imageUpload/src/views');
+
 // setting middleware
 app.use(morgan("dev"));
+app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+app.use(express.static("apiuploads"))
 // setting error path
 app.use((err: any, req: any, res: any, next: any) => {
     err = new Error(`${req.url} not found in this server`);

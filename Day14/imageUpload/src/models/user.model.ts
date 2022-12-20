@@ -23,15 +23,13 @@ export const User = db.define(
         freezeTableName: true,
         // dont use createdAt/update
         timestamps: true,
-        tableName: "user-forget-password",
-
         hooks: {
             beforeCreate: async (user: any) => {
                 const salt = await bcrypt.genSalt();
                 console.log("salt", salt);
 
                 const hash = await bcrypt.hash(user.password, salt);
-                // user.password = hash;
+                user.password = hash;
             },
         },
     }

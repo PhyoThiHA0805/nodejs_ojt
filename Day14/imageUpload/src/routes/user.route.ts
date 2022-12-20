@@ -4,9 +4,10 @@ import upload from "../utils/file-upload.utils";
 
 const router = express.Router();
 
+router.get("/signup", controller.user.getSignUpForm);
 router.get("/", controller.user.getAll);
 router.get("/:username", controller.user.getUsername);
-router.post("/", upload, controller.user.createNew);
+router.post("/signup", upload, controller.user.createNew);
 router.put("/", controller.user.editAt);
 router.delete("/", controller.user.deleteUser);
 

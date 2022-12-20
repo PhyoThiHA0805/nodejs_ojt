@@ -5,20 +5,25 @@ import { validate } from "../models/user.model";
 // Get All users
 export async function getUsers(req: any, res: any) {
     try {
-        const userData = await model.user.findAll();
+        let userData = await model.user.findAll();
         if (userData.length > 0) {
-            res.status(200).json({
+            userData = userData.map((user) => {
+                return user.dataValues;
+            });
+            console.log("Users: ", userData);
+
+            res.status(200).render("usersList", {
                 message: "Connection successful",
                 data: userData,
             });
         } else {
-            res.status(200).json({
+            res.status(200).render("usersList", {
                 message: "Connection failed",
                 data: [],
             });
         }
     } catch (error) {
-        res.status(404).json({ message: error });
+        res.status(404).render("usersList", { message: error });
     }
 }
 
@@ -49,7 +54,11 @@ export async function getUserByUsername(req: any, res: any) {
 export async function createUser(req: any, res: any) {
     try {
         const { error } = validate(req.body);
-        if (error) res.status(400).send(error.details[0].message);
+        if (error)
+            return res.status(400).render("signup", {
+                message: error.details[0].message,
+                success: false,
+            });
 
         const checkData = await model.user.findAll({
             where: {
@@ -61,8 +70,9 @@ export async function createUser(req: any, res: any) {
         });
 
         if (checkData.length > 0) {
-            res.status(500).json({
+            res.status(500).render("signup", {
                 message: "username/password has already in use",
+                success: false,
             });
         } else {
             model.user
@@ -74,8 +84,9 @@ export async function createUser(req: any, res: any) {
                     token: req.body.username + req.body.password,
                 })
                 .then((result: any) => {
-                    res.status(201).json({
+                    res.status(201).render("signup", {
                         message: "user successful created",
+                        success: true,
                         data: {
                             username: req.body.username,
                             // password: req.body.password,
@@ -84,8 +95,8 @@ export async function createUser(req: any, res: any) {
                     });
                 });
         }
-    } catch (err) {
-        res.status(404).json({ message: err });
+    } catch (err: any) {
+        res.status(404).render("signup", { message: err, success: false });
     }
 }
 
@@ -160,4 +171,10 @@ export async function deleteUser(req: any, res: any) {
     } catch (err) {
         res.status(404).json({ message: err });
     }
+}
+
+// Get Signup Form
+
+export function getSignUpForm(req: any, res: any) {
+    res.render("signup");
 }

@@ -1,0 +1,38 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Users List
+        link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css")
+        style.
+              body {
+                font-family: Arial, sans-serif;
+                background-color: #e7e7e7;
+              }
+
+              .card {
+                border-radius: 5px;
+              }
+
+              .text {
+                font-size:15px;
+              }
+    body
+        .container 
+            h2(style = "text-align: center") UserList
+                table.table.table-striped
+
+            if (data)
+              .d-flex.flex-row
+                each user in data     
+                  .user-detail.card.w-lg-30.w-sm-100.p-3.m-3
+                    img(src=`http://localhost:3000/${user.profileImage}` style="width: 100%; height:60%; object-fit:cover margin: 0 auto")
+
+                    .user-content.mt-3
+                      b Username: 
+                      p.text.mb-3 #{user.username}
+                      
+                      b Email: 
+                      p.text #{user.email}

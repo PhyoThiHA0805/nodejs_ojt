@@ -18,19 +18,29 @@ const index_model_1 = __importDefault(require("../models/index.model"));
 const crypto_1 = __importDefault(require("crypto"));
 const sendEmail_utils_1 = __importDefault(require("../utils/sendEmail.utils"));
 const router = express_1.default.Router();
+router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    res.render("forget-password");
+}));
 router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("request", req.body);
     try {
         const schema = joi_1.default.object({
             email: joi_1.default.string().email().required(),
         });
         const { error } = schema.validate(req.body);
         if (error)
-            return res.status(400).send(error.details[0].message);
+            return res.status(400).render("forget-password", {
+                message: error.details[0].message,
+                success: false,
+            });
         const user = yield index_model_1.default.user.findOne({
             where: { email: req.body.email },
         });
         if (!user)
-            return res.status(400).send("user with given email doesn't exist");
+            return res.status(400).render("forget-password", {
+                message: "user with given email doesn't exist",
+                success: false,
+            });
         let token = yield index_model_1.default.token.findOne({
             where: { user_id: user.user_id },
         });
@@ -42,25 +52,47 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         let link = `${process.env.BASE_URL}/forget-password/${user.user_id}/${token.dataValues.token}`;
         yield (0, sendEmail_utils_1.default)(user.email, "Password reset", link);
-        res.send("password reset link sent to your email account");
+        res.render("forget-password", {
+            message: "password reset link sent to your email account",
+            success: true,
+        });
     }
     catch (error) {
-        res.send("An error occured");
+        res.render("forget-password", {
+            message: "An error occured",
+            success: false,
+        });
         console.log(error);
     }
+}));
+router.get("/:user_id/:token", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let url = "http://localhost:3000/" + req.params.user_id + "/" + req.params.token;
+    res.render("password-reset", {
+        url: url
+    });
 }));
 router.post("/:user_id/:token", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const schema = joi_1.default.object({ password: joi_1.default.string().required() });
         const { error } = schema.validate(req.body);
         if (error)
-            return res.status(400).send(error.details[0].message);
+            return res
+                .status(400)
+                .render("password-reset", {
+                message: error.details[0].message,
+                success: false,
+            });
         const user = yield index_model_1.default.user.findOne({
             where: { user_id: req.params.user_id },
         });
         console.log("User:", user);
         if (!user)
-            return res.status(400).send("invalid link or expired");
+            return res
+                .status(400)
+                .render("password-reset", {
+                message: "invalid link or expired",
+                success: false,
+            });
         const token = yield index_model_1.default.token.findOne({
             where: {
                 user_id: user.user_id,
@@ -68,15 +100,26 @@ router.post("/:user_id/:token", (req, res) => __awaiter(void 0, void 0, void 0, 
             },
         });
         if (!token)
-            return res.status(400).send("Invalid link or expired");
+            return res
+                .status(400)
+                .render("password-reset", {
+                message: "Invalid link or expired",
+                success: false,
+            });
         yield index_model_1.default.user.update({ password: req.body.password }, { where: { user_id: req.params.user_id } });
         console.log("New Password: ", user.password);
         yield token.destroy();
-        res.status(200).send("Password reset successfully");
+        res.status(200).render("password-reset", {
+            message: "Password reset successfully",
+            success: true,
+        });
     }
     catch (error) {
         console.log(error);
-        res.status(400).send(`Error : , ${error}`);
+        res.status(400).render("password-reset", {
+            message: error.message,
+            success: true,
+        });
     }
 }));
 exports.default = router;

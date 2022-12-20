@@ -53,5 +53,9 @@ const controller = {
     deleteUser: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         userService.deleteUser(req, res);
     }),
+    // Get Signup form
+    getSignUpForm: (req, res) => {
+        userService.getSignUpForm(req, res);
+    }
 };
 exports.default = controller;

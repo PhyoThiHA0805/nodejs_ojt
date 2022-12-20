@@ -24,6 +24,11 @@ const controller = {
     deleteUser: async (req: any, res: any) => {
         userService.deleteUser(req, res);
     },
+
+    // Get Signup form
+    getSignUpForm: (req: any, res: any) => {
+        userService.getSignUpForm(req, res);
+    }
 };
 
 export default controller;

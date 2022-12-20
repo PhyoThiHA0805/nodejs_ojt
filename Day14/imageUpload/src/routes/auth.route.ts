@@ -38,22 +38,5 @@ router.post("/login", async (req, res, next) => {
     })(req, res, next);
 });
 
-// router.post(
-//     "/login",
-//     passport.authenticate("login"),
-//     async (req: any, res: any, next: any) => {
-//         try {
-//             req.login(req.user, { session: false }, async (err: any) => {
-//                 if (err) return next(err);
 
-//                 const body = { _id: req.user._id, email: req.user.email };
-//                 const token = jwt.sign({ user: body }, "TOP_SECRET");
-
-//                 return res.json({ token });
-//             });
-//         } catch (err) {
-//             return next(err);
-//         }
-//     }
-// );
 export default router;

@@ -34,13 +34,12 @@ exports.User = db_config_1.default.define("user-forget-password", {
     freezeTableName: true,
     // dont use createdAt/update
     timestamps: true,
-    tableName: "user-forget-password",
     hooks: {
         beforeCreate: (user) => __awaiter(void 0, void 0, void 0, function* () {
             const salt = yield bcrypt_1.default.genSalt();
             console.log("salt", salt);
             const hash = yield bcrypt_1.default.hash(user.password, salt);
-            // user.password = hash;
+            user.password = hash;
         }),
     },
 });

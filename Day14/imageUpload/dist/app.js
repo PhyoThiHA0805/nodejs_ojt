@@ -15,10 +15,15 @@ const express_session_1 = __importDefault(require("express-session"));
 const password_reset_route_1 = __importDefault(require("./src/routes/password-reset.route"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
+// Setting View Engine
+app.set('view engine', 'pug');
+app.set('views', 'D:/nodejs/nodejs_ojt/Day14/imageUpload/src/views');
 // setting middleware
 app.use((0, morgan_1.default)("dev"));
+app.use(express_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use(body_parser_1.default.json());
+app.use(express_1.default.static("apiuploads"));
 // setting error path
 app.use((err, req, res, next) => {
     err = new Error(`${req.url} not found in this server`);
