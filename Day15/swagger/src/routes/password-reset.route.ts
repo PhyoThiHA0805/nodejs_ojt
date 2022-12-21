@@ -17,20 +17,30 @@ router.post("/", async (req: any, res: any) => {
             email: Joi.string().email().required(),
         });
         const { error } = schema.validate(req.body);
-        if (error)
-            return res.status(400).render("forget-password", {
+        if (error) {
+            //   return res.status(400).render("forget-password", {
+            //     message: error.details[0].message,
+            //     success: false,
+            // });
+            return res.status(400).send({
                 message: error.details[0].message,
                 success: false,
             });
+        }
 
         const user = await model.user.findOne({
             where: { email: req.body.email },
         });
-        if (!user)
-            return res.status(400).render("forget-password", {
+        if (!user) {
+            // return res.status(400).render("forget-password", {
+            //     message: "user with given email doesn't exist",
+            //     success: false,
+            // });
+            return res.status(400).send({
                 message: "user with given email doesn't exist",
                 success: false,
             });
+        }
 
         let token = await model.token.findOne({
             where: { user_id: user.user_id },
@@ -45,7 +55,12 @@ router.post("/", async (req: any, res: any) => {
         let link = `${process.env.BASE_URL}/forget-password/${user.user_id}/${token.dataValues.token}`;
         await sendEmail(user.email, "Password reset", link);
 
-        res.render("forget-password", {
+        // res.render("forget-password", {
+        //     message: "password reset link sent to your email account",
+        //     success: true,
+        // });
+
+        res.status(200).send({
             message: "password reset link sent to your email account",
             success: true,
         });
@@ -59,9 +74,10 @@ router.post("/", async (req: any, res: any) => {
 });
 
 router.get("/:user_id/:token", async (req: any, res: any) => {
-    let url = "http://localhost:3000/" + req.params.user_id + "/" + req.params.token;
+    let url =
+        "http://localhost:3000/" + req.params.user_id + "/" + req.params.token;
     res.render("password-reset", {
-        url: url
+        url: url,
     });
 });
 
@@ -69,25 +85,31 @@ router.post("/:user_id/:token", async (req: any, res: any) => {
     try {
         const schema = Joi.object({ password: Joi.string().required() });
         const { error } = schema.validate(req.body);
-        if (error)
-            return res
-                .status(400)
-                .render("password-reset", {
-                    message: error.details[0].message,
-                    success: false,
-                });
+        if (error) {
+            // return res.status(400).render("password-reset", {
+            //     message: error.details[0].message,
+            //     success: false,
+            // });
+            return res.status(400).send({
+                message: error.details[0].message,
+                success: false,
+            });
+        }
 
         const user = await model.user.findOne({
             where: { user_id: req.params.user_id },
         });
         console.log("User:", user);
-        if (!user)
-            return res
-                .status(400)
-                .render("password-reset", {
-                    message: "invalid link or expired",
-                    success: false,
-                });
+        if (!user) {
+            // return res.status(400).render("password-reset", {
+            //     message: "invalid link or expired",
+            //     success: false,
+            // });
+            return res.status(400).send({
+                message: "invalid link or expired",
+                success: false,
+            });
+        }
 
         const token = await model.token.findOne({
             where: {
@@ -95,13 +117,16 @@ router.post("/:user_id/:token", async (req: any, res: any) => {
                 token: req.params.token,
             },
         });
-        if (!token)
-            return res
-                .status(400)
-                .render("password-reset", {
-                    message: "Invalid link or expired",
-                    success: false,
-                });
+        if (!token) {
+            // return res.status(400).render("password-reset", {
+            //     message: "Invalid link or expired",
+            //     success: false,
+            // });
+            return res.status(400).send({
+                message: "Invalid link or expired",
+                success: false,
+            });
+        }
 
         await model.user.update(
             { password: req.body.password },
@@ -109,13 +134,25 @@ router.post("/:user_id/:token", async (req: any, res: any) => {
         );
         console.log("New Password: ", user.password);
         await token.destroy();
-        res.status(200).render("password-reset", {
+
+        // res.status(200).render("password-reset", {
+        //     message: "Password reset successfully",
+        //     success: true,
+        // });
+
+        res.status(200).send({
             message: "Password reset successfully",
             success: true,
         });
     } catch (error: any) {
         console.log(error);
-        res.status(400).render("password-reset", {
+
+        // res.status(400).render("password-reset", {
+        //     message: error.message,
+        //     success: true,
+        // });
+
+        res.status(400).send({
             message: error.message,
             success: true,
         });

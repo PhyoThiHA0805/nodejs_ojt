@@ -12,9 +12,9 @@ export const User = db.define(
             defaultValue: sequelize.UUIDV4,
             primaryKey: true,
         },
-        profileImage: { type: sequelize.STRING },
+        profileImage: { type: sequelize.STRING},
         username: { type: sequelize.STRING },
-        email: { type: sequelize.STRING},
+        email: { type: sequelize.STRING },
         password: { type: sequelize.STRING },
         token: { type: sequelize.STRING },
     },
@@ -41,7 +41,7 @@ export const validate = (user: any) => {
         username: Joi.string().required(),
         email: Joi.string().email().required(),
         password: Joi.string().required(),
-        token: Joi.string()
+        token: Joi.string(),
     });
     return schema.validate(user);
 };
@@ -50,9 +50,9 @@ export const validate = (user: any) => {
 //     return bcrypt.compare(password, this.password);
 // };
 
-User.prototype.isValidPassword = async function(password: string) {
+User.prototype.isValidPassword = async function (password: string) {
     const user = this;
     const compare = await bcrypt.compare(password, user.password);
-  
+
     return compare;
-  }
+};
