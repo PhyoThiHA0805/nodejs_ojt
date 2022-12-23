@@ -3,6 +3,7 @@ import model from "../models/index.model";
 import { validate } from "../models/user.model";
 import jwt from "jsonwebtoken";
 import Joi from "joi";
+import _ from "lodash";
 
 // Get All users
 export async function getUsers(req: any, res: any) {
@@ -42,12 +43,12 @@ export async function getUserByUsername(req: any, res: any) {
     try {
         const userData = await model.user.findAll({
             where: {
-              username: req.params.username
+                username: req.params.username,
             },
             attributes: {
-              exclude: ["password"]
-            }
-          });
+                exclude: ["password"],
+            },
+        });
 
         if (userData.length > 0) {
             res.status(200).json({
@@ -67,6 +68,7 @@ export async function getUserByUsername(req: any, res: any) {
 
 // Create new User
 export async function createUser(req: any, res: any) {
+    console.log(req.body.username, "bbbbbbbbbbbbbbbbb");
     try {
         const { error } = validate(req.body);
         if (error) {
@@ -84,19 +86,20 @@ export async function createUser(req: any, res: any) {
             where: {
                 [Op.or]: {
                     username: req.body.username,
-                    password: req.body.password,
+                    email: req.body.email,
                 },
             },
         });
-
+        console.log(checkData, "check.......");
+        let profileImage;
         if (checkData.length > 0) {
             // res.status(500).render("signup", {
-            //     message: "username/password has already in use",
+            //     message: "username/email has already in use",
             //     success: false,
             // });
 
             res.status(500).send({
-                message: "username/password has already in use",
+                message: "username/email has already in use",
                 success: false,
             });
         } else {
@@ -110,9 +113,12 @@ export async function createUser(req: any, res: any) {
                     username: req.body.username,
                     password: req.body.password,
                     email: req.body.email,
-                    token: jwt.sign(payload, process.env.JWT_SECRET || ""),
+                    token: jwt.sign(payload, process.env.JWT_SECRET || "", {
+                        expiresIn: "1d",
+                    }),
                 })
                 .then((result: any) => {
+                    console.log(result, "oooooooooooooooooooo");
                     // res.status(201).render("signup", {
                     //     message: "user successfully created",
                     //     success: true,
@@ -126,7 +132,12 @@ export async function createUser(req: any, res: any) {
                     res.status(201).send({
                         message: "user successfully created",
                         success: true,
-                        data: result,
+                        data: _.pick(result, [
+                            "user_id",
+                            "profileImage",
+                            "username",
+                            "email",
+                        ]),
                     });
                 });
         }

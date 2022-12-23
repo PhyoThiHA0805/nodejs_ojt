@@ -25,10 +25,11 @@
         "http"
     ],
     "consumes": [
-        " application/json"
+        "application/json",
+        "multipart/form-data"
     ],
     "produces": [
-        " application/json"
+        "application/json"
     ],
     "securityDefinitions": {
         "basicAuth": {
@@ -102,25 +103,26 @@
                 "tags": [
                     "Users"
                 ],
+                "consumes": [
+                    "multipart/form-data"
+                ],
                 "parameters": [
+                    {
+                        "name": "fileUpload",
+                        "in": "formData",
+                        "description": "Profile image of the user",
+                        "type": "file",
+                        "required": true
+                    },
                     {
                         "name": "user",
                         "in": "body",
                         "description": "User that we want to create",
                         "schema": {
                             "$ref": "#/definitions/CreateUser"
-                        }
-                    },
-                    {
-                        "name": "profileImage",
-                        "in": "formData",
-                        "description": "Profile image of the user",
-                        "type": "file",
-                        "required": true
+                        },
+                        "consumes": "application/json"
                     }
-                ],
-                "produces": [
-                    " application/json"
                 ],
                 "summary": "Create New User",
                 "responses": {
