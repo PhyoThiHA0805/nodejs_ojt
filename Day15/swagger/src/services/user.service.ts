@@ -68,7 +68,8 @@ export async function getUserByUsername(req: any, res: any) {
 
 // Create new User
 export async function createUser(req: any, res: any) {
-    console.log(req.body.username, "bbbbbbbbbbbbbbbbb");
+
+    req.body = req.body.user ? JSON.parse(req.body.user) : req.body;
     try {
         const { error } = validate(req.body);
         if (error) {
@@ -91,7 +92,6 @@ export async function createUser(req: any, res: any) {
             },
         });
         console.log(checkData, "check.......");
-        let profileImage;
         if (checkData.length > 0) {
             // res.status(500).render("signup", {
             //     message: "username/email has already in use",

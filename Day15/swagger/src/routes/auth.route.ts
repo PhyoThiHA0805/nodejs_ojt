@@ -28,8 +28,8 @@ router.post("/login", async (req, res, next) => {
                 if (error) return next(error);
 
                 const body = { _id: user._id, email: user.email };
-                const token = jwt.sign({ user: body }, "TOP_SECRET", { expiresIn: "1D"});
-
+                let token = jwt.sign({ user: body }, "TOP_SECRET", { expiresIn: "1D"});
+                token = token.includes("Bearer") ? token : "Bearer " + token;
                 return res.header('x-auth-header', token).json({message: "Login Successful"});
             });
         } catch (error) {

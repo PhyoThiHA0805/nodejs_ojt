@@ -10,6 +10,19 @@
         }
     },
     "host": "localhost:3000",
+    "securityDefinitions": {
+        "bearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "headers",
+            "scheme": "bearer"
+        }
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ],
     "basePath": "/",
     "tags": [
         {
@@ -31,17 +44,6 @@
     "produces": [
         "application/json"
     ],
-    "securityDefinitions": {
-        "basicAuth": {
-            "type": "basic"
-        },
-        "bearerAuth": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header",
-            "description": "JWT Authorization header"
-        }
-    },
     "paths": {
         "/user": {
             "get": {
@@ -103,9 +105,6 @@
                 "tags": [
                     "Users"
                 ],
-                "consumes": [
-                    "multipart/form-data"
-                ],
                 "parameters": [
                     {
                         "name": "fileUpload",
@@ -116,12 +115,15 @@
                     },
                     {
                         "name": "user",
-                        "in": "body",
+                        "in": "formData",
+                        "type": "object",
                         "description": "User that we want to create",
                         "schema": {
                             "$ref": "#/definitions/CreateUser"
                         },
-                        "consumes": "application/json"
+                        "consumes": [
+                            "application/json"
+                        ]
                     }
                 ],
                 "summary": "Create New User",
@@ -191,23 +193,14 @@
         },
         "/auth/profile": {
             "get": {
-                "summary": "Go to secure Route",
-                "tags": [
-                    "Auth"
-                ],
-                "parameters": [
-                    {
-                        "name": "Authorization",
-                        "in": "header",
-                        "description": "JWT access token",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
                 "security": [
                     {
                         "bearerAuth": []
                     }
+                ],
+                "summary": "Go to secure Route",
+                "tags": [
+                    "Auth"
                 ],
                 "responses": {
                     "200": {
@@ -405,7 +398,6 @@
         "CreateUser": {
             "type": "object",
             "required": [
-                "profileImage",
                 "username",
                 "email",
                 "password"
